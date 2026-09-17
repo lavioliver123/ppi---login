@@ -1,0 +1,60 @@
+ctrl + shift + F : Organizar codigo
+
+MODELS
+
+tarefa.php
+
+public function criar(){
+$descricao = $this->conn->real_escape_string($descricao);
+$sql = "INSERT INTO tarefas (descricao) VALUES ('$descricao')";
+return $this->conn->query($sql);
+}
+public function excluir($id){
+$id = intval($id);
+$sql = "DELETE FROM tarefas WHERE id = $id";
+return $this->conn->query($sql);
+}
+
+public function listar(){
+$tarefas=[];
+$sql = "SELECT * FROM tarefas ORDER BY data_criacao DESC";
+$resultados = $this->conn->query($sql);
+if($resultados-> num_rows>0){
+while($rowados = $resultados->fetch_assoc()){
+$tarefas[]=$rowados;
+}
+}
+return $tarefas;
+}
+
+
+CONTROLLERS
+
+controllers.php
+
+require_once __DIR__ . '/../models/tarefas.php';
+
+class TarefaController(){
+private $tarefaModel;
+
+public function __contruct(){
+$this->tarefaModel = new Tarefas();
+}
+public function criar(){
+if(isset($_POST['descricao']) && !empty(trim($_POST['descricao']))){
+$this->tarefaModel->criar($_POST['descricao']);
+
+}
+
+header("Location: index.php");
+}
+
+public function excluir(){
+if(isset($_GET['delete'])){
+$this->tarefaModel->excluir($_GET[]'delete');
+}
+
+header('Location: index.php');
+}
+}
+
