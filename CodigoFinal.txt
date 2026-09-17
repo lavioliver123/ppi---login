@@ -56,5 +56,10 @@ $this->tarefaModel->excluir($_GET[]'delete');
 
 header('Location: index.php');
 }
+public function index(){
+$tarefas = $this->tarefaModel->listar();
+include __DIR__ . '/../views/listar.php';
+
+}
 }
 
